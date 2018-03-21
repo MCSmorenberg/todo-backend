@@ -2,8 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Todo = require('../models/todo');
 
+// Enable CORS --> is a mechanism that uses additional HTTP headers to let a user agent gain permission.
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 router.get('/todo', function(req, res, nextMiddleWare){
-  res.send({type:'GET'});
+  // res.send({type:'GET'});
+  Todo.find().then(function(todos){
+    res.send(todos);
+  }).catch(nextMiddleWare);
 });
 
 // Add new todo
